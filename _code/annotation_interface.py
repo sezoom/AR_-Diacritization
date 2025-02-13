@@ -102,7 +102,7 @@ if __name__ == "__main__":
             save = gr.Button("Save Updated Text")
         
         dia_button.click(diacritize, inputs=[text], outputs=[correct_text])
-        save.click(save_new, [audio, correct_text]).\
+        save.click(save_new, [sample, correct_text]).\
             then(next, outputs=[sample, audio, text, correct_text])
     
     block.launch(share= True)
