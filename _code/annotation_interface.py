@@ -80,7 +80,7 @@ if __name__ == "__main__":
         index += 1
         if index == len(aud_text):
             return gr.Info("No more audio files")
-        return aud_text[index][0], aud_text[index][0], aud_text[index][1], gr.Textbox(value=aud_text[index][1])
+        return aud_text[index][0], aud_text[index][0], aud_text[index][1], gr.Textbox(value=aud_text[index][1]), gr.Textbox(value=f"{index}/{len(aud_text)}", label="Progress")
 
     def save_new(audio, text):
         if text != "":
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         return text
         
     with gr.Blocks(theme=gr.themes.Glass()) as block:
+        progress = gr.Textbox(value=f"{index}/{len(aud_text)}", label="Progress")
         sample = gr.Markdown(f"{aud_text[index][0]}")
         audio = gr.Audio(value=aud_text[index][0], type="filepath", label="Audio", autoplay=True)
         text = gr.Markdown(f"{aud_text[index][1]}")
@@ -103,7 +104,7 @@ if __name__ == "__main__":
         
         dia_button.click(diacritize, inputs=[text], outputs=[correct_text])
         save.click(save_new, [sample, correct_text]).\
-            then(next, outputs=[sample, audio, text, correct_text])
+            then(next, outputs=[sample, audio, text, correct_text, progress])
     
     block.launch(share= True)
 
